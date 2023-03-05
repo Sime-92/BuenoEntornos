@@ -9,39 +9,62 @@ public class Criba {
             int dim = max + 1; // Tamaño del array
             boolean[] esPrimo = new boolean[dim];
             //Inicializar el array
-            for (i = 0; i < dim; i++) {
-                esPrimo[i] = true;
-                //Eliminar el 0 y el 1 que no son primos
-                esPrimo[0] = esPrimo[1] = false;
-
-            }
+            inicializarArray(dim, esPrimo);
             //Criba
-            for (i = 2; i < Math.sqrt(dim) + 1; i++) {
-                if (esPrimo[i])
-                    //Eliminar los multiplos de i
-                    for (j = 2 * i; j < dim; j += i) {
-                        esPrimo[j] = false;
-                    }
-
-            }
+            criba(dim, esPrimo);
             //Cuantos primos hay?
-            int cuenta = 0;
-            for (i = 0; i < dim; i++) {
-                if (esPrimo[i]) {
-                    cuenta++;
-                }
-            }
+            int cuenta = cuantosPrimos(dim, esPrimo);
             //Rellenar el vector de numeros primos
             int[] primos = new int[cuenta];
 
-            for (i = 0, j = 0; i < dim; i++) {
-                if (esPrimo[i])
-                    primos[j++] = i;
-
-            }
+            rellenarVector(dim, esPrimo, primos);
             return primos;
         } else { // max < 2
             return new int[0];//Vector Vacío
+
+        }
+    }
+
+    private static void rellenarVector(int dim, boolean[] esPrimo, int[] primos) {
+        int j;
+        int i;
+        for (i = 0, j = 0; i < dim; i++) {
+            if (esPrimo[i])
+                primos[j++] = i;
+
+        }
+    }
+
+    private static int cuantosPrimos(int dim, boolean[] esPrimo) {
+        int i;
+        int cuenta = 0;
+        for (i = 0; i < dim; i++) {
+            if (esPrimo[i]) {
+                cuenta++;
+            }
+        }
+        return cuenta;
+    }
+
+    private static void criba(int dim, boolean[] esPrimo) {
+        int i;
+        int j;
+        for (i = 2; i < Math.sqrt(dim) + 1; i++) {
+            if (esPrimo[i])
+                //Eliminar los multiplos de i
+                for (j = 2 * i; j < dim; j += i) {
+                    esPrimo[j] = false;
+                }
+
+        }
+    }
+
+    private static void inicializarArray(int dim, boolean[] esPrimo) {
+        int i;
+        for (i = 0; i < dim; i++) {
+            esPrimo[i] = true;
+            //Eliminar el 0 y el 1 que no son primos
+            esPrimo[0] = esPrimo[1] = false;
 
         }
     }
